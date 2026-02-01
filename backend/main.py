@@ -45,7 +45,6 @@ from src.pipeline.generation import (
     JiraTicketPipeline,
     PipelineConfig,
     GenerationResult,
-    generate_ticket,
     get_pipeline
 )
 from src.retrieval import create_retriever
@@ -187,37 +186,17 @@ def get_generation_pipeline() -> JiraTicketPipeline:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """
-    Application lifecycle manager.
-    
-    STARTUP:
-    - Validate environment
-    - Initialize pipeline (warm up)
-    
-    SHUTDOWN:
-    - Clean up resources
-    """
-    # Startup
+    """Application lifecycle manager."""
     logger.info("Starting Jira Ticket RAG API...")
     
     # Validate API key
     if not settings.google_api_key:
-        logger.error("GOOGLE_API_KEY not set!")
-        raise RuntimeError("GOOGLE_API_KEY environment variable required")
-    
-    # Warm up pipeline (optional - loads models)
-    try:
-        _ = get_pipeline()
-        logger.info("Pipeline initialized successfully")
-    except Exception as e:
-        logger.error(f"Failed to initialize pipeline: {e}")
-        raise
+        logger.warning("GOOGLE_API_KEY not set!")
     
     logger.info(f"API ready - Model: {settings.llm.model}")
     
     yield  # Application runs here
     
-    # Shutdown
     logger.info("Shutting down Jira Ticket RAG API...")
 
 
