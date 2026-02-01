@@ -1,0 +1,78 @@
+# =============================================================================
+# Docker Compose - Jira Ticket RAG System
+# =============================================================================
+#
+# Services:
+#   - backend:  FastAPI API server (port 8000)
+#   - frontend: React app with nginx (port 80)
+#
+# Usage:
+#   # Start all services
+#   docker-compose up -d
+#
+#   # View logs
+#   docker-compose logs -f
+#
+#   # Stop all services
+#   docker-compose down
+#
+#   # Rebuild after code changes
+#   docker-compose up --build -d
+#
+# =============================================================================
+
+version: "3.8"
+
+services:
+  # ---------------------------------------------------------------------------
+  # Backend - FastAPI API Server
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jira-ticket-backend
+    environment:
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-2.5-flash-preview-05-20}
+      - CHROMA_PERSIST_DIRECTORY=/app/data/chroma
+      - CHROMA_COLLECTION_NAME=jira_issues
+      - LOG_LEVEL=INFO
+    volumes:
+      # Persist ChromaDB data
+      - chroma_data:/app/data/chroma
+      # Mount processed data (read-only)
+      - ./data/processed:/app/data/processed:ro
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Frontend - React App with nginx
+  # ---------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - REACT_APP_API_URL=
+    container_name: jira-ticket-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  chroma_data:
+    driver: local

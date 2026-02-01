@@ -1,0 +1,132 @@
+# =============================================================================
+# TUTORIAL: Python Dependencies with LangChain + ReAct Agent
+# =============================================================================
+#
+# WHY LANGCHAIN?
+# --------------
+# LangChain provides standardized interfaces for:
+#   - LLMs (OpenAI, Google, Anthropic, local models)
+#   - Embeddings (same providers)
+#   - Vector stores (Chroma, Pinecone, Weaviate, etc.)
+#   - Chains (composable pipelines)
+#   - AGENTS (ReAct, function calling, tool use)
+#
+# This means you can swap providers without rewriting your code!
+#
+# AGENT VS WORKFLOW:
+# ------------------
+# This project uses a ReAct AGENT, not a fixed workflow:
+# - Agent REASONS about what to do next
+# - Agent DECIDES which tools to use
+# - Agent ADAPTS based on intermediate results
+# - Agent SELF-CORRECTS when validation fails
+#
+# LANGCHAIN ECOSYSTEM:
+# --------------------
+# - langchain-core: Base abstractions and LCEL
+# - langchain: Agents, chains, output parsers
+# - langchain-google-genai: Google/Gemini integration
+# - langchain-chroma: ChromaDB vector store
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# LangChain Core
+# -----------------------------------------------------------------------------
+# langchain-core: Base abstractions, LCEL, and core utilities
+# This is the foundation that everything else builds on
+langchain-core>=0.3.0
+
+# langchain: High-level chains, AGENTS, and utilities
+# CRITICAL: Includes AgentExecutor, create_react_agent, tool decorators
+# This is what enables the ReAct agent pattern!
+langchain>=0.3.0
+
+# -----------------------------------------------------------------------------
+# LangChain Integrations
+# -----------------------------------------------------------------------------
+# langchain-google-genai: Official Google Gemini integration
+# Provides: ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+langchain-google-genai>=2.0.0
+
+# langchain-chroma: ChromaDB vector store integration
+# Provides: Chroma (LangChain-compatible wrapper)
+langchain-chroma>=0.1.0
+
+# langchain-text-splitters: Advanced text chunking
+# Provides: RecursiveCharacterTextSplitter, etc.
+langchain-text-splitters>=0.3.0
+
+# langchain-community: Community integrations and utilities
+# Useful for additional agent tools and callbacks
+langchain-community>=0.3.0
+
+# -----------------------------------------------------------------------------
+# Vector Database
+# -----------------------------------------------------------------------------
+# chromadb: Embedded vector database
+# Used for storing and querying document embeddings
+chromadb>=0.4.22
+
+# -----------------------------------------------------------------------------
+# Web Framework
+# -----------------------------------------------------------------------------
+# FastAPI: Modern async web framework
+fastapi>=0.109.0
+
+# Uvicorn: ASGI server for FastAPI
+uvicorn[standard]>=0.27.0
+
+# -----------------------------------------------------------------------------
+# Data Processing
+# -----------------------------------------------------------------------------
+# pandas: Data manipulation for CSV/JSONL processing
+pandas>=2.0.0
+
+# pydantic: Data validation (also used by FastAPI)
+pydantic>=2.0.0
+
+# pydantic-settings: Settings management with environment variables
+pydantic-settings>=2.0.0
+
+# python-dotenv: Load .env files
+python-dotenv>=1.0.0
+
+# PyYAML: YAML parsing for configuration files
+pyyaml>=6.0.0
+
+# -----------------------------------------------------------------------------
+# Reliability & Observability
+# -----------------------------------------------------------------------------
+# tenacity: Retry library for API calls
+tenacity>=8.2.0
+
+# -----------------------------------------------------------------------------
+# Production Server
+# -----------------------------------------------------------------------------
+# Gunicorn: Production WSGI/ASGI server
+gunicorn>=21.0.0
+
+
+# =============================================================================
+# OPTIONAL: Development Dependencies
+# =============================================================================
+# Uncomment these for development:
+#
+# pytest>=7.0.0              # Testing framework
+# pytest-asyncio>=0.21.0     # Async test support
+# black>=23.0.0              # Code formatting
+# mypy>=1.0.0                # Type checking
+# ruff>=0.1.0                # Fast linter
+
+# =============================================================================
+# INSTALLATION
+# =============================================================================
+#
+# Using pip:
+#   pip install -r requirements.txt
+#
+# Using uv (faster):
+#   uv pip install -r requirements.txt
+#
+# =============================================================================
