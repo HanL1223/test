@@ -418,6 +418,14 @@ def prepare_issues(
                 _safe_str(row.get("Custom field (Acceptance Criteria)"))
             )
         )
+        if acceptance_criteria.strip().lower() in (
+            "given, when, then",
+            "given when then",
+        ):
+            acceptance_criteria = ""
+        """
+        Most ticket's acceptance_criteria is in body and not the AC field, hence removing it as it affect the search accuracy
+        """
         
         # Extract and combine comments
         comment_bodies = _extract_comment_bodies(row, comment_cols)

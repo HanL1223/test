@@ -97,7 +97,7 @@ Examples:
     )
     parser.add_argument(
         "--persist-dir",
-        default="data/chroma",
+        default=None,
         help="ChromaDB persistence directory (default: data/chroma)",
     )
     parser.add_argument(
@@ -158,13 +158,15 @@ Examples:
     if args.force:
         if collection_exists():
             logger.info(f"Force flag set - deleting existing collection: {args.collection}")
-            delete_collection(args.collection, args.persist_dir)
+            from src.config import settings
+            delete_collection(args.collection, args.persist_dir or str(settings.chroma.persist_dir))
     
     # Configure pipeline
+    from src.config import settings
     config = IndexingConfig(
         data_path=str(input_path),
         collection_name=args.collection,
-        persist_directory=args.persist_dir,
+        persist_directory=args.persist_dir or str(settings.chroma.persist_dir),
         chunk_size=args.chunk_size,
         chunk_overlap=args.chunk_overlap,
         batch_size=args.batch_size,
@@ -204,7 +206,7 @@ Examples:
         
         print(f"\n✓ Successfully indexed {result.chunks_indexed} chunks")
         print(f"  Collection: {args.collection}")
-        print(f"  Location:   {args.persist_dir}")
+        print(f"  Location:   {config.persist_directory}")
         
     except Exception as e:
         logger.error(f"Indexing failed: {e}")

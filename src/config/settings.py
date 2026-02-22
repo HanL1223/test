@@ -93,7 +93,7 @@ class EmbeddingSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="EMBEDDING_")
     
     model: str = Field(
-        default="models/text-embedding-004",
+        default="models/gemini-embedding-001",
         description="Embedding model name"
     )
     
@@ -117,7 +117,7 @@ class ChromaSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="CHROMA_")
     
     persist_dir: Path = Field(
-        default=Path("./data/chromadb"),
+        default=Path("C:/temp/chroma_data"),
         description="Directory for ChromaDB persistence"
     )
     

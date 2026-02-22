@@ -196,9 +196,14 @@ def build_issue_text(
     
     # Acceptance Criteria (if present)
     if acceptance_criteria and acceptance_criteria.strip():
-        cleaned_ac = redact_jira_tokens(acceptance_criteria.strip())
-        if cleaned_ac:
-            parts.append(f"Acceptance Criteria:\n{cleaned_ac}")
+        _is_default_ac = acceptance_criteria.strip().lower() in (
+            "given, when, then",
+            "given when then",
+        )
+        if not _is_default_ac:
+            cleaned_ac = redact_jira_tokens(acceptance_criteria.strip())
+            if cleaned_ac:
+                parts.append(f"Acceptance Criteria:\n{cleaned_ac}")
     
     # Comments (limited to most recent for relevance)
     if comments:

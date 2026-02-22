@@ -106,6 +106,7 @@ def create_embeddings(
     return GoogleGenerativeAIEmbeddings(
         model=model,
         google_api_key=api_key,
+        output_dimensionality=768,
         # Task type is set dynamically per operation in LangChain
         # Default is RETRIEVAL_DOCUMENT for embed_documents
         # and RETRIEVAL_QUERY for embed_query
@@ -256,11 +257,13 @@ def get_embedding_dimension() -> int:
     
     # Known dimensions for Google models
     dimension_map = {
+        "models/gemini-embedding-001": 3072,
+        "gemini-embedding-001": 3072,
         "models/text-embedding-004": 768,
         "text-embedding-004": 768,
     }
     
-    return dimension_map.get(model, 768)  # Default to 768
+    return dimension_map.get(model, 3072)  # Default to 3072
 
 
 def clear_cache():
