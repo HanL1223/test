@@ -1,19 +1,20 @@
 services:
-  # Backend API Service
   - type: web
     name: jira-rag-api
     runtime: python
     region: oregon
     plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    startCommand: bash scripts/render_start.sh
     envVars:
       - key: PYTHON_VERSION
         value: "3.12"
       - key: GOOGLE_API_KEY
-        sync: false  # Set manually in Render dashboard
+        sync: false
       - key: GEMINI_MODEL
-        value: "gemini-2.0-flash"
+        value: "gemini-2.5-flash"
+      - key: EMBEDDING_MODEL
+        value: "models/gemini-embedding-001"
       - key: JIRA_BASE_URL
         sync: false
       - key: JIRA_EMAIL

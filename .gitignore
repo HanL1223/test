@@ -111,3 +111,6 @@ pip-delete-this-directory.txt
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+
+Get-Content .gitignore | Select-String -Pattern "chroma|data|env|temp|__pycache__"

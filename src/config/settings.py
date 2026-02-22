@@ -117,7 +117,7 @@ class ChromaSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="CHROMA_")
     
     persist_dir: Path = Field(
-        default=Path("C:/temp/chroma_data"),
+        default=Path("./data/chroma"),
         description="Directory for ChromaDB persistence"
     )
     
